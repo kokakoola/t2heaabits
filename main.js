@@ -4,28 +4,28 @@
 //     0-esimene, 1=teine, 2=kolmas.
 STEPS = [
     {question: 'a', color: 'lightgreen', bgColor: "darkgreen",
-     options: ['aken', 'elevant', 'banaan'], answer: 0},
+     options: ['auto', 'elevant', 'banaan'], answer: 0, txt: 'auto'},
 
     {question: 'b', color: 'blue', bgColor: "lightblue",
-     options: ['koer', 'banaan', 'elevant'], answer: 1},
-
-    {question: 'c', color: 'brown', bgColor: "yellow",
-     options: ['aken', 'koer', 'coca-cola'], answer: 2},
+     options: ['ymbrik', 'banaan', 'elevant'], answer: 1, txt: 'banaan'},
 
     {question: 'd', color: 'yellow', bgColor: "black",
-     options: ['dolomiit', 'kass', 'hiir'], answer: 0},
+     options: ['diivan', 'lill', 'qqkull'], answer: 0, txt: 'diivan'},
 
-    {question: 'k', color: 'pink', bgColor: "darkblue",
-     options: ['dolomiit', 'kass', 'hiir'], answer: 1},
+    {question: 'e', color: 'pink', bgColor: "darkblue",
+     options: ['rong', 'elevant', 'hiir'], answer: 1, txt: 'elevant'},
 
-    {question: 'x', color: 'purple', bgColor: "pink",
-     options: ['xanax', 'elevant', 'ratas'], answer: 0},
+    {question: 'g', color: 'purple', bgColor: "pink",
+     options: ['gloobus', 'konn', 'ymbrik'], answer: 0, txt: 'gloobus'},
 
-    {question: 'r', color: '#f7a', bgColor: "maroon",
-     options: ['koer', 'ratas', 'xanax'], answer: 1},
+    {question: 'h', color: '#f7a', bgColor: "maroon",
+     options: ['part', 'hiir', 'maja'], answer: 1, txt: 'hiir'},
 
-    {question: 'h', color: '#dfe', bgColor: "#b93",
-     options: ['banaan', 'koer', 'hiir'], answer: 2}
+    {question: 'j', color: '#dfe', bgColor: "#b93",
+     options: ['banaan', 'siil', 'j2nes'], answer: 2, txt: 'jänes'},
+     
+    {question: 'k', color: 'brown', bgColor: "yellow",
+     options: ['nqqp', 'tigu', 'konn'], answer: 2, txt: 'konn'},
 ];
 
 FIRST_STEP_NR = 0;
@@ -143,7 +143,6 @@ function move(fromSlide, toSlide, direction, afterAnimate) {
     // täitmiseks. Umbes nagu ärikonsultant ei soorita ise samme oma
     // kliendi ettevõtte parandamiseks vaid annab kliendile juhtnöörid
     // ja klient täidab neid juhtnööre kokkulepitud hetkel.
-
     // Jätame pasiivse slaidi varjatuks, aga paneme ta kohe
     // aknaraamist VASAKULE:
     toSlide.css("left", (-direction) * SLIDE_WIDTH);
@@ -170,16 +169,24 @@ function move(fromSlide, toSlide, direction, afterAnimate) {
 function setUpEvents(slide) {
     // Võtame DOM'ist vajaminevad elemendid:
     var allOptionElements = slide.find(".options").children();
+    var txtElement = slide.find(".txt");
 
     // Paneme etteantud slaidi vastusevariantidele külge
     // click-eventi handlerid:
-    allOptionElements.each(function(index, optionEl) {
+    allOptionElements.each(function(index, optionEl, question) {
+    
+    	var letter = slide.find(".question");
+    	$(letter).click(function() {
+    	$(this).toggleClass("question .lower")
+    	});
+    	
         $(optionEl).click(function() {
             var currentStep = STEPS[slide.stepNr];
             if (currentStep.answer == index) {
                 alert("Jah!! Võtame järgmise!");
-                allOptionElements.animate({width: "50px", height: "50px"});
+                allOptionElements.animate({width: "50px", height: "50px"}).fadeOut('fast');
                 $(optionEl).animate({width: "200px", height: "200px"});
+                $(txtElement).fadeIn('slow');
             } else {
                 var randomValue = Math.random();
                 if (randomValue < 0.5) {
@@ -200,15 +207,18 @@ function loadStep(slide, stepNr) {
 
     // Leiame selle span'i, mille sees alguses on LETTER HERE:
     var questionEl = slide.find(".question");
+    var txtEl = slide.find(".txt");
+
 
     // Määrame selle elemendi sisuks question.letter'i sisu:
     questionEl.text(step.question);
+    txtEl.text(step.txt.toUpperCase() + "\r\n" + step.txt);
     questionEl.css("color", step.color);
     slide.css("background-color", step.bgColor);
 
     var allImgElements = slide.find(".options img");
     allImgElements.each(function(index, imgEl) {
-        var imageUrl = "media/" + step.options[index] + ".jpeg";
+        var imageUrl = "Asjad/" + step.options[index] + ".gif";
         $(imgEl).attr("src", imageUrl);
     });
 }

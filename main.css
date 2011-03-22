@@ -20,13 +20,6 @@
 
 #empty-slide { display: none; }
 
-#slide-1 {
-   background-color: #ffa;
-}
-#slide-2 {
-   background-color: #aff;
-}
-
 /* aken ja slaidid on alati samade mõõtmetega,*/
 /* st pilt akna sees on sama suur kui aken ise. */
 #window, .slide {
@@ -34,6 +27,9 @@
    height: 300px;
 }
 
+.txt {
+	display: none;
+}
 
 .slide .question {
    font-family: Arial;
@@ -44,6 +40,10 @@
    left: 50px;
    width: 300px;
    text-align: center;
+   cursor: pointer;
+}
+.slide .question .lower {
+	text-transform: lowercase;
 }
 .slide .options img {
    height: 100px;
@@ -62,5 +62,4 @@
    float: left;
 
    text-align: center;
-   overflow: hidden;
 }
