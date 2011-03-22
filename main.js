@@ -4,28 +4,28 @@
 //     0-esimene, 1=teine, 2=kolmas.
 STEPS = [
     {question: 'a', color: 'lightgreen', bgColor: "darkgreen",
-     options: ['auto', 'elevant', 'banaan'], answer: 0, txt: 'auto'},
+     options: ['auto', 'elevant', 'banaan'], answer: 0, word: 'auto'},
 
     {question: 'b', color: 'blue', bgColor: "lightblue",
-     options: ['ymbrik', 'banaan', 'elevant'], answer: 1, txt: 'banaan'},
+     options: ['ymbrik', 'banaan', 'elevant'], answer: 1, word: 'banaan'},
 
     {question: 'd', color: 'yellow', bgColor: "black",
-     options: ['diivan', 'lill', 'qqkull'], answer: 0, txt: 'diivan'},
+     options: ['diivan', 'lill', 'qqkull'], answer: 0, word: 'diivan'},
 
     {question: 'e', color: 'pink', bgColor: "darkblue",
-     options: ['rong', 'elevant', 'hiir'], answer: 1, txt: 'elevant'},
+     options: ['rong', 'elevant', 'hiir'], answer: 1, word: 'elevant'},
 
     {question: 'g', color: 'purple', bgColor: "pink",
-     options: ['gloobus', 'konn', 'ymbrik'], answer: 0, txt: 'gloobus'},
+     options: ['gloobus', 'konn', 'ymbrik'], answer: 0, word: 'gloobus'},
 
     {question: 'h', color: '#f7a', bgColor: "maroon",
-     options: ['part', 'hiir', 'maja'], answer: 1, txt: 'hiir'},
+     options: ['part', 'hiir', 'maja'], answer: 1, word: 'hiir'},
 
     {question: 'j', color: '#dfe', bgColor: "#b93",
-     options: ['banaan', 'siil', 'j2nes'], answer: 2, txt: 'jänes'},
-     
+     options: ['banaan', 'siil', 'j2nes'], answer: 2, word: 'jänes'},
+
     {question: 'k', color: 'brown', bgColor: "yellow",
-     options: ['nqqp', 'tigu', 'konn'], answer: 2, txt: 'konn'},
+     options: ['nqqp', 'tigu', 'konn'], answer: 2, word: 'konn'},
 ];
 
 FIRST_STEP_NR = 0;
@@ -169,24 +169,24 @@ function move(fromSlide, toSlide, direction, afterAnimate) {
 function setUpEvents(slide) {
     // Võtame DOM'ist vajaminevad elemendid:
     var allOptionElements = slide.find(".options").children();
-    var txtElement = slide.find(".txt");
+    var wordElement = slide.find(".word");
 
     // Paneme etteantud slaidi vastusevariantidele külge
     // click-eventi handlerid:
     allOptionElements.each(function(index, optionEl, question) {
-    
-    	var letter = slide.find(".question");
-    	$(letter).click(function() {
-    	$(this).toggleClass("question .lower")
-    	});
-    	
+
+        var letter = slide.find(".question");
+        $(letter).click(function() {
+            $(this).toggleClass("question .lower")
+        });
+
         $(optionEl).click(function() {
             var currentStep = STEPS[slide.stepNr];
             if (currentStep.answer == index) {
                 alert("Jah!! Võtame järgmise!");
                 allOptionElements.animate({width: "50px", height: "50px"}).fadeOut('fast');
                 $(optionEl).animate({width: "200px", height: "200px"});
-                $(txtElement).fadeIn('slow');
+                $(wordElement).fadeIn('slow');
             } else {
                 var randomValue = Math.random();
                 if (randomValue < 0.5) {
@@ -207,18 +207,18 @@ function loadStep(slide, stepNr) {
 
     // Leiame selle span'i, mille sees alguses on LETTER HERE:
     var questionEl = slide.find(".question");
-    var txtEl = slide.find(".txt");
+    var wordEl = slide.find(".word");
 
 
     // Määrame selle elemendi sisuks question.letter'i sisu:
     questionEl.text(step.question);
-    txtEl.text(step.txt.toUpperCase() + "\r\n" + step.txt);
+    wordEl.text(step.word.toUpperCase() + "\r\n" + step.word);
     questionEl.css("color", step.color);
     slide.css("background-color", step.bgColor);
 
     var allImgElements = slide.find(".options img");
     allImgElements.each(function(index, imgEl) {
-        var imageUrl = "Asjad/" + step.options[index] + ".gif";
+        var imageUrl = "media/" + step.options[index] + ".gif";
         $(imgEl).attr("src", imageUrl);
     });
 }
