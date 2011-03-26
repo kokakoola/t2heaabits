@@ -1,21 +1,78 @@
 /* aknale määrame stiile ID kaudu, sest akent on alati üks */
 #window {
-   position: relative;  /* selleks, et akna sees koordinaadid oleks akna suhtes*/
-   overflow: hidden;
+    margin: auto;
+    position: relative;  /* selleks, et akna sees koordinaadid oleks akna suhtes*/
+    overflow: visible;
+/* 	padding:10px; */
+	border:1px solid #fff;
+	-moz-box-shadow:0px 0px 2px #aaa inset;
+}
 
-   border: 2px solid gray;
+ul li {
+    list-style-type: none;
+    display: inline; 
+    position: relative; 
+    top: 330px;    
 }
+
+.abaca {
+    font-family: Arial, Helvetica;
+    font-weight: bold;
+    font-size: 32px;
+    text-decoration: none;
+    padding-left: 10px;
+    color: #bebebe;
+    text-shadow: rgba(255,255,255,1) 0 -1px, rgba(255,255,255,0.3) 0 1px;
+    -webkit-mask-image: -webkit-gradient(linear, left top,
+        left bottom, from(rgba(0,0,0,0.5)), to(rgba(0,0,0,1)));
+/*     display: none; */
+    z-index: 30;
+}
+
+/* miks on default visited? miks tuleb ümber punktiirkastike tähele kui klikkida? 
+peale oma kohale paigutamist ei saa klikkida, sest on optioni all peidus*/
+.abaca:link { color: #bebebe; }
+.abaca:hover { color: gray; }
+.abaca:active { color: red; }
+/* .abaca:visited { color: lime; } */
+
+
+/*
+miks kui panen siin position absolute lõpetab js töö?
+ainus mis töötab, on control ise!
+elementide paigutamine lehel on hämar teema.
+*/
 #controls {
-   position: absolute;
-   top: 0; right: 0;
-   z-index: 1000; /* et next-prev nupud oleks kõige peal alati */
+    height: 40px;
+    margin: 0 auto;
+    position: relative;
+    top: 110px;
+    text-align: center;
+    width: 680px;
 }
+
+a#button-next, #button-prev {
+    background: url("media/elements/buttons.png") no-repeat scroll 0 -40px transparent;
+    cursor: pointer;
+    height: 40px;
+    margin-top: -20px;
+    position: absolute;
+    top: 50%;
+    width: 41px;
+    z-index: 30;
+    display: none;
+}
+
+a#button-prev { left: -20px; }
+a#button-next { background-position: -41px -40px; right: -20px; }
+a#button-next:hover { background-position: -41px 0; }
+a#button-prev:hover { background-position: 0 0; }
 
 /* slaididele määrame stiile klassi kaudu, sest slaide pole ainult üks */
 .slide {
-   position: absolute;
-   top: 0px;  /* slaidi ülaosa on alati aknaraamiga kohakuti */
-   left: -1000px;  /* vaikimisi on slaid varjatud */
+    position: absolute;
+    top: 0px;  /* slaidi ülaosa on alati aknaraamiga kohakuti */
+    left: -1000px;  /* vaikimisi on slaid varjatud */
 }
 
 #empty-slide { display: none; }
@@ -23,43 +80,63 @@
 /* aken ja slaidid on alati samade mõõtmetega,*/
 /* st pilt akna sees on sama suur kui aken ise. */
 #window, .slide {
-   width: 400px;
-   height: 300px;
+    width: 680px;
+    height: 410px;
+    background-image: url("media/elements/w_bg.png");
+    background-repeat: repeat-x;
 }
 
 .word {
-	display: none;
+    font-family: "Lucida Sans Unicode","Lucida Grande",sans-serif;
+    font-size: 32px;
+    letter-spacing: 0.05em;
+    line-height: 34px;
+    margin-top: 40px;
+    margin-left: 60px;
+    display: none;
 }
 
-.slide .question {
-   font-family: Arial;
-   font-size: 150px;
-   text-transform: uppercase;
-   position: absolute;
-   top: 20px;
-   left: 50px;
-   width: 300px;
-   text-align: center;
-   cursor: pointer;
+.slide .letter {
+    font-family: Arial, Hevetica;
+    font-weight: bold;
+    font-size: 300px;
+    text-transform: uppercase;
+    position: absolute;
+    top: -20px;
+    left: 180px;
+    width: 300px;
+    text-align: center;
+    text-shadow: rgba(255,255,255.3) 0 -1px, rgba(255,255,255,0.3) 0 4px;
+    -webkit-mask-image: -webkit-gradient(linear, left top,
+        left bottom, from(rgba(0,0,0,0.5)), to(rgba(0,0,0,1)));
+    cursor: pointer;
 }
-.slide .question .lower {
-	text-transform: lowercase;
-}
-.slide .options img {
-   height: 100px;
-}
+
+.lower { text-transform: lowercase !important; }
+.upper { text-transform: uppercase !important; }
+
+.z  { z-index: 1000 }
+
 
 .slide .options {
-   position: absolute;
-   left: 50px;
-   bottom: 0px;
+    position: absolute;
+    left: 50px;
+    bottom: 0px;
+    z-index: 10;
 }
+
+.slide .options img {
+    height: 170px;
+}
+
 .slide .options .option-1,
 .slide .options .option-2,
 .slide .options .option-3 {
-   width: 100px;
-   height: 100px;
-   float: left;
-
-   text-align: center;
+    position: relative;
+    width: 170px;
+    height: 170px;
+    float: left;
+    text-align: center;
+    margin-left: 20px;
 }
+
