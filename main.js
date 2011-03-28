@@ -5,33 +5,37 @@
 
 /* sa mainisid, et siin on duplikatsioon - aga me ei rääkind sellest rohkem */
 STEPS = [
-    {letter: 'a', art: 'vocal',
+    {letter: 'a', type: 'vowel',
      options: ['auto', 'elevant', 'banaan'], answer: 0, word: 'auto'},
 
-    {letter: 'b', art: 'stopconsonant',
+    {letter: 'b', type: 'stopconsonant',
      options: ['ymbrik', 'banaan', 'elevant'], answer: 1, word: 'banaan'},
 
-    {letter: 'd', art: 'stopconsonant',
+    {letter: 'd', type: 'stopconsonant',
      options: ['diivan', 'lill', 'qqkull'], answer: 0, word: 'diivan'},
 
-    {letter: 'e', art: 'vocal',
+    {letter: 'e', type: 'vowel',
      options: ['rong', 'elevant', 'hiir'], answer: 1, word: 'elevant'},
 
-    {letter: 'g', art: 'stopconsonant',
+    {letter: 'g', type: 'stopconsonant',
      options: ['gloobus', 'konn', 'ymbrik'], answer: 0, word: 'gloobus'},
 
-    {letter: 'h', art: 'consonant',
-     options: ['part', 'hiir', 'maja'], answer: 1, word: 'hiir'},
+    {letter: 'h', type: 'consonant',
+     options: ['ptype', 'hiir', 'maja'], answer: 1, word: 'hiir'},
 
-    {letter: 'j', art: 'consonant',
+    {letter: 'j', type: 'consonant',
      options: ['banaan', 'siil', 'j2nes'], answer: 2, word: 'jänes'},
 
-    {letter: 'k', art: 'stopconsonant',
+    {letter: 'k', type: 'stopconsonant',
      options: ['nqqp', 'tigu', 'konn'], answer: 2, word: 'konn'}
 ];
 
 FIRST_STEP_NR = 0;
 LAST_STEP_NR = STEPS.length - 1;
+
+VOWEL_COLOR = '#CC0000';
+CONSONANT_COLOR = '#00398F';
+STOPCONSONANT_COLOR = '#008A00';
 
 // Kui tahame disaini muuta, peame ainult siinse numbri ära muutma.
 SLIDE_WIDTH = 680;
@@ -42,44 +46,38 @@ LEFT = -1;
 // See muutuja viitab slaidile (DOM element), mis parasjagu aktiivne on:
 currentSlide = null;
 
-/* väga piinlik, aga ma ei oska buttonite var-i koostada, 
-seepärast järgneb paar duplikatsiooni */
-
 $(function() {
     // createSlide loob slaidi, mis on täidetud etteantud numbriga
     // küsimusega ja paneb selle #window sisse.
     currentSlide = createSlide(FIRST_STEP_NR);
     // Liigutame äsjaloodud slaidi paika, st täpselt aknasse:
-    currentSlide.css("left", 0);
+    currentSlide.css('left', 0);
+    var navElements = $('#button-prev, #button-next, .alphabet_letter');
     // Seo Next ja Previous nupud vastavate toimingutega.
-    $("#button-next").click(function() { 
+    $('#button-next').click(function() { 
         changeSlide(RIGHT); 
-        $("#button-next").fadeOut('slow'); 
-        $("#button-prev").fadeOut('slow');
-        $(".abaca").fadeOut('slow');
+        $(navElements).fadeOut('slow'); 
     });
-    $("#button-prev").click(function() { 
+    $('#button-prev').click(function() { 
         changeSlide(LEFT); 
-        $("#button-next").fadeOut('slow'); 
-        $("#button-prev").fadeOut('slow');
-        $(".abaca").fadeOut('slow');
-        });
+        $(navElements).fadeOut('slow'); 
+    });
 });
 
 
 function createSlide(stepNr) {
 
     // Kloonime uue slaidi võttes näidiseks #empty-slide'i:
-    var slide = $("#empty-slide").clone();
+    var slide = $('#empty-slide').clone();
 
     // ID'd me otseselt ei vaja, kuna hoiame nagunii aktiivset slaidi
     // globaalses muutujas currentSlide, aga kuna #empty-slide on meil
     // ka alati DOM'is ja kahe DOM elemendi ID'd ei tohiks olla samad,
     // siis muudabe kloonitud DOM elemendi ID ära:
-    slide.attr("id", "current-slide");
+    slide.attr('id', 'current-slide');
 
     // Lisame äsjakloonitud tühja slaidi #window sisse:
-    slide.appendTo("#window");
+    slide.appendTo('#window');
 
     // Kutsume välja protseduuri, mis paneb slaidile vajalikud
     // event'id külge:
@@ -149,23 +147,23 @@ function move(fromSlide, toSlide, direction, afterAnimate) {
     // andma. Asi on selles, et see loogika kuulub changeSlide'i
     // pädevusse. Sellise lihtsa programmi puhul iseenesest vahet
     // pole, aga üldiselt on oluline, et iga koodi osa kirjeldaks just
-    // seda, milles ta pädev on. Ja just nimelt "KIRJELDAKS" mitte
-    // "TEEKS", sest changeSlide ise EI TEE neid samme, mis selles
+    // seda, milles ta pädev on. Ja just nimelt 'KIRJELDAKS' mitte
+    // 'TEEKS', sest changeSlide ise EI TEE neid samme, mis selles
     // eeskirjas on, vaid ta delegeerib need sammud edasi õigel hetkel
     // täitmiseks. Umbes nagu ärikonsultant ei soorita ise samme oma
     // kliendi ettevõtte parandamiseks vaid annab kliendile juhtnöörid
     // ja klient täidab neid juhtnööre kokkulepitud hetkel.
     // Jätame pasiivse slaidi varjatuks, aga paneme ta kohe
     // aknaraamist VASAKULE:
-    toSlide.css("left", (-direction) * SLIDE_WIDTH);
+    toSlide.css('left', (-direction) * SLIDE_WIDTH);
     // Liigutame aktiivse täispikkuse võrra PAREMALE, nii et ta
     // kaob lõpuks ära
-    fromSlide.animate({"left": direction * SLIDE_WIDTH},
+    fromSlide.animate({'left': direction * SLIDE_WIDTH},
                       {complete: afterAnimate});
 
     // Liigutame passiivse täispikkuse võrra PAREMALE, nii et ta
     // ilmub lõpuks täpselt raami keskele nähtavaks.
-    toSlide.animate({"left": 0});
+    toSlide.animate({'left': 0});
 
     // Iseenesest võiks ka kogu move'i sisu INLINE'ida changeSlide'i
     // sisse ehk asendada see koht changeSlide'is, kus move'i välja
@@ -180,45 +178,35 @@ function move(fromSlide, toSlide, direction, afterAnimate) {
 // pihtahakkamist sobivas olekus.
 function setUpEvents(slide) {
     // Võtame DOM'ist vajaminevad elemendid:
-    var allOptionElements = slide.find(".options").children();
-    var wordElement = slide.find(".word");
+    var allOptionElements = slide.find('.options').children();
+    var wordElement = slide.find('.word');
 
-    var letter = slide.find(".letter");
+    var letter = slide.find('.letter');
     $(letter).click(function() {
-        $(this).toggleClass("lower");
+        $(this).toggleClass('lower');
     });
 
     // Paneme etteantud slaidi vastusevariantidele külge
     // click-eventi handlerid:
     allOptionElements.each(function(index, optionEl) {    
 
-    /*
-    näib, et toimib - aga: 1) z-indeks (css-iga küljes) ei toimi tegelikult. 
-    jah, ta peaks tulema igale elemendile külge animeerimise alguses, 
-    et element oleks eespool.pole mängu toimimise osas oluline, 
-    oluline on, et ta ei toimi kuigi võiks.2) top 100 ei toimi. 
-    miks ei toimi. vaja oleks, et zoom algaks x teljest ülespoole 
-    - ma ei tea kuidas seda programmile öelda. 
-    3) miks firebugi inspektor näitab ainult ühe elemedi korral 
-    väljazoomitud elemendi andmeid õigesti, 
-    teiste korral toimub animatsioon, aga see ei kajastu inspektoris
-    */
-    $(optionEl).hover(
+    $(optionEl).mouseover(
         function() {
-            $(this).find('img').addClass('z');
-            $(this).find('img').stop(false, true).animate({width: '120%', height: '120%', "top": '-=100px'},
-                {duration: '300'});
-        },
-        function() {
-            $(this).find('img').stop(false, true).removeClass('z').animate({width: '100%', height: '100%', "top": '0'},
-                {duration: '300'});
+            $(this).find('img')
+                .filter(':not(:animated)')
+                .animate({width: '120%', height: '120%', left: '+=50', top: '-=50'}, {duration: '500'});
+            $('.options:animated').css('z-index', '100')
+        }).mouseout(
+        function() {       
+            $(this).find('img')
+                .animate({width: '100%', height: '100%', left: '0', top: '0'}, {duration: '500'});
         }
     );
         /*
         jällegi animate hämar: 1) miks top -100 toimib alles siis kui px 
         lõppu lisada? api ütleb, et kui määrangut pole,
         lisatakse vaikimisi parameetriks px. 2) kui ma tahaksin välja 
-        võtta "valed" vastused, kuidas ma neid kutsuda saan?
+        võtta 'valed' vastused, kuidas ma neid kutsuda saan?
         if else küll, aga muutujaga (tüüpi var wrongAnswer = currentStep.answer !== index)
          3) miks allOptionElementsi ees ei käi $ märki? või miks teiste 
          ees käib. või on see lihtsalt minu tekitatud viga (aga see toimib)?
@@ -228,21 +216,20 @@ function setUpEvents(slide) {
 
         $(optionEl).one('click',(function() {
             var currentStep = STEPS[slide.stepNr];
+            var navElements = $('#button-prev, #button-next, .alphabet_letter');
             if (currentStep.answer === index) {
-                alert("Jah!! Võtame järgmise!");
+                alert('Jah!! Võtame järgmise!');
                 $(optionEl).unbind('mouseenter mouseleave mouseover mouseout');            
                 allOptionElements.fadeOut('fast');
-                $(optionEl).animate({top: '-=100px', width: "200px", height: "200px"},{duration: 100});
+                $(optionEl).animate({top: '-=100px', width: '200px', height: '200px'},{duration: 100});
                 $(wordElement).fadeIn('slow');
-                $("#button-next").delay(1000).fadeIn('slow'); 
-                $("#button-prev").delay(1000).fadeIn('slow');
-                $(".abaca").delay(1000).fadeIn('slow');                
+                $(navElements).delay(1000).fadeIn('slow');     
             } else {
                 var randomValue = Math.random();
                 if (randomValue < 0.5) {
-                    alert("Ei... proovi veel!");
+                    alert('Ei... proovi veel!');
                 } else {
-                    alert("Vale vastus...");
+                    alert('Vale vastus...');
                 }
             }
         }));
@@ -255,37 +242,27 @@ function loadStep(slide, stepNr) {
     var step = STEPS[stepNr];
 
     // Leiame selle span'i, mille sees alguses on LETTER HERE:
-    var letterEl = slide.find(".letter");
-    var wordEl = slide.find(".word");
-
+    var letterEl = slide.find('.letter');
+    var wordEl = slide.find('.word');
+    
     // Määrame selle elemendi sisuks letter.letter'i sisu:
     letterEl.text(step.letter);
-    wordEl.find(".upper").text(step.word);
-    wordEl.find(".lower").text(step.word);
-    /*     letterEl.css("color", step.color); */
-    /*     slide.css("background-color", step.bgColor); */
+    wordEl.find('.upper').text(step.word);
+    wordEl.find('.lower').text(step.word);
+    /*     letterEl.css('color', step.color); */
+    /*     slide.css('background-color', step.bgColor); */
 
-    /* lisatud värvid tähtedele. kas javascriptis on 
-    ka mingi lihtne viis gradiendi tekitamiseks? */
-    if (step.art === 'vocal') {
-        letterEl.css("color", "#CC0000");
-    } else if (step.art === 'consonant') {
-            letterEl.css("color", "#00398F");
+    if (step.type === 'vowel') {
+        letterEl.css('color', VOWEL_COLOR);
+    } else if (step.type === 'consonant') {
+            letterEl.css('color', CONSONANT_COLOR);
         } else {
-            letterEl.css("color", "#008A00");
+            letterEl.css('color', STOPCONSONANT_COLOR);
         }
 
-    var allImgElements = slide.find(".options img");
+    var allImgElements = slide.find('.options img');
     allImgElements.each(function(index, imgEl) {
-        var imageUrl = "media/" + step.options[index] + ".gif";
-        $(imgEl).attr("src", imageUrl);
+        var imageUrl = 'media/' + step.options[index] + '.gif';
+        $(imgEl).attr('src', imageUrl);
     });
 }
-
-
-MUUD KÜSIMUSED
-- miks mäng töötab ainult firefoxis. chrome ja safari ei näita (enam) miskit
-- kui ma olen jumala kogemata mingi konksu ära kustutanud - kas on mingi viis 
-veakohta kiiresti ja lihtsalt üles leida? jslint aitab, aga ise?
-- elementi domist võtta saan nt "xxx img". kas ka "xxx a"?
-*/
